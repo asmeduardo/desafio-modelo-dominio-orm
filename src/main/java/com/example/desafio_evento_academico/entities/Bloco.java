@@ -1,15 +1,14 @@
 package com.example.desafio_evento_academico.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_bloco")
 public class Bloco implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -22,6 +21,10 @@ public class Bloco implements Serializable {
     private Instant inicio;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant fim;
+
+    @ManyToOne
+    @JoinColumn(name = "atividade_id")
+    private Atividade atividade;
 
     public Bloco() {}
 

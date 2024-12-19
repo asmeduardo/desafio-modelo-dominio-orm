@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_categoria")
-public class Categoria implements Serializable {
+@Table(name = "tb_participante")
+public class Participante implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -19,14 +19,18 @@ public class Categoria implements Serializable {
     private Integer id;
     private String nome;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Atividade> atividades = new ArrayList<>();
+    @Column(unique = true)
+    private String email;
 
-    public Categoria() {}
+    @ManyToMany(mappedBy = "participantes")
+    private Set<Atividade> atividades = new HashSet<>();
 
-    public Categoria(Integer id, String nome) {
+    public Participante() {}
+
+    public Participante(Integer id, String nome, String email) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
     }
 
     public Integer getId() {
@@ -45,15 +49,23 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public List<Atividade> getAtividades() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<Atividade> getAtividades() {
         return atividades;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return Objects.equals(id, categoria.id);
+        Participante that = (Participante) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
